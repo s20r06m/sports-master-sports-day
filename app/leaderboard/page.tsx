@@ -16,7 +16,7 @@ type LeaderboardUser = User & {
 
 export default async function LeaderboardPage() {
   const { data, error } = await supabase
-    .from<User>("users")
+    .from("users")
     .select(
       "firstname, lastname, house, participationcount, firstplacecount, secondplacecount, thirdplacecount"
     );
@@ -30,7 +30,9 @@ export default async function LeaderboardPage() {
     );
   }
 
-  const leaderboard: LeaderboardUser[] = (data ?? [])
+  const users = (data ?? []) as User[];
+
+  const leaderboard: LeaderboardUser[] = users
     .map((user) => {
       const participation = user.participationcount ?? 0;
       const firstPlace = user.firstplacecount ?? 0;
