@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 type User = {
   firstname: string | null;
@@ -15,6 +15,17 @@ type LeaderboardUser = User & {
 };
 
 export default async function LeaderboardPage() {
+  const supabase = getSupabase();
+
+  if (!supabase) {
+    return (
+      <main>
+        <h1>Leaderboard</h1>
+        <p>Unable to load users because Supabase environment variables are not configured.</p>
+      </main>
+    );
+  }
+
   const { data, error } = await supabase
     .from("users")
     .select(
