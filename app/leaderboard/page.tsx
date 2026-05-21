@@ -1,4 +1,6 @@
-import { getSupabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
+import CurrentUserBar from "@/components/CurrentUserBar";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 type User = {
   firstname: string | null;
@@ -15,17 +17,6 @@ type LeaderboardUser = User & {
 };
 
 export default async function LeaderboardPage() {
-  const supabase = getSupabase();
-
-  if (!supabase) {
-    return (
-      <main>
-        <h1>Leaderboard</h1>
-        <p>Unable to load users because Supabase environment variables are not configured.</p>
-      </main>
-    );
-  }
-
   const { data, error } = await supabase
     .from("users")
     .select(
@@ -49,15 +40,22 @@ export default async function LeaderboardPage() {
       const firstPlace = user.firstplacecount ?? 0;
       const secondPlace = user.secondplacecount ?? 0;
       const thirdPlace = user.thirdplacecount ?? 0;
+
       return {
         ...user,
-        totalPoints: participation * 1 + firstPlace * 4 + secondPlace * 3 + thirdPlace * 2,
+        totalPoints:
+          participation * 1 +
+          firstPlace * 4 +
+          secondPlace * 3 +
+          thirdPlace * 2,
       };
     })
     .sort((a, b) => b.totalPoints - a.totalPoints);
 
-  return (
+  return (<ProtectedRoute>
     <main>
+      <CurrentUserBar />
+
       <h1>Leaderboard</h1>
       <ul className="leaderboard-list">
         {leaderboard.map((user, index) => {
@@ -84,5 +82,6 @@ export default async function LeaderboardPage() {
         })}
       </ul>
     </main>
+  </ProtectedRoute>
   );
 }
