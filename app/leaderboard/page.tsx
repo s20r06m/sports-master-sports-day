@@ -20,8 +20,8 @@ export default async function LeaderboardPage() {
   const { data, error } = await supabase
     .from("users")
     .select(
-      "firstname, lastname, house, participationcount, firstplacecount, secondplacecount, thirdplacecount"
-    );
+  "firstname, lastname, house, role, participationcount, firstplacecount, secondplacecount, thirdplacecount"
+);
 
   if (error) {
     return (
@@ -32,7 +32,25 @@ export default async function LeaderboardPage() {
     );
   }
 
-  const users = (data ?? []) as User[];
+  const users = (data ?? [])
+  .filter((user) => user.role !== "admin") as User[];
+  const teamTotals = users.reduce((acc, user) => {
+    const house = (user.house ?? "default").toLowerCase();
+
+    const points =
+      (user.participationcount ?? 0) * 1 +
+      (user.firstplacecount ?? 0) * 4 +
+      (user.secondplacecount ?? 0) * 3 +
+      (user.thirdplacecount ?? 0) * 2;
+
+    if (!acc[house]) {
+      acc[house] = 0;
+    }
+
+    acc[house] += points;
+
+    return acc;
+  }, {} as Record<string, number>);
 
   const leaderboard: LeaderboardUser[] = users
     .map((user) => {
@@ -55,8 +73,29 @@ export default async function LeaderboardPage() {
   return (<ProtectedRoute>
     <main>
       <CurrentUserBar />
-
       <h1>Leaderboard</h1>
+      <div className="team-grid">
+        <div className="team-card house-red">
+          <h3>Red Team</h3>
+          <p className="team-points">{teamTotals["red"] ?? 0} pts</p>
+        </div>
+
+        <div className="team-card house-blue">
+          <h3>Blue Team</h3>
+          <p className="team-points">{teamTotals["blue"] ?? 0} pts</p>
+        </div>
+
+        <div className="team-card house-green">
+          <h3>Green Team</h3>
+          <p className="team-points">{teamTotals["green"] ?? 0} pts</p>
+        </div>
+
+        <div className="team-card house-yellow">
+          <h3>Yellow Team</h3>
+          <p className="team-points">{teamTotals["yellow"] ?? 0} pts</p>
+        </div>
+      </div>
+
       <ul className="leaderboard-list">
         {leaderboard.map((user, index) => {
           const houseClass = `house-${(user.house ?? "default")
