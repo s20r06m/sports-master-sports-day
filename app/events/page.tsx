@@ -20,6 +20,7 @@ type Event = {
   thirdplaceuserids: string[];
 
   completed: boolean;
+  suggested: boolean | null;
 };
 
 type User = {
