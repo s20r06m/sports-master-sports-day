@@ -928,6 +928,26 @@ p {
   font-weight: 700;
 }
 
+.user-admin-house {
+  min-width: 120px;
+
+  padding: var(--space-sm) var(--space-md);
+
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+
+  background: var(--surface-light);
+  color: var(--foreground);
+
+  font-size: var(--text-sm);
+}
+
+.user-admin-house:focus {
+  outline: none;
+  border-color: rgba(59, 130, 246, 0.5);
+  background: var(--surface-lighter);
+}
+
 /* Mobile */
 
 @media (max-width: 768px) {

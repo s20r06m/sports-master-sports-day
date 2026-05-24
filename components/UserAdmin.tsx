@@ -11,6 +11,8 @@ type User = {
   role: string | null;
 };
 
+const houses = ["Red", "Blue", "Green", "Yellow"];
+
 export default function UserAdmin() {
   const [users, setUsers] = useState<User[]>([]);
 
@@ -26,6 +28,28 @@ export default function UserAdmin() {
 
     loadUsers();
   }, []);
+  const updateHouse = async (
+  userid: string,
+  house: string
+) => {
+  const { error } = await supabase
+    .from("users")
+    .update({ house })
+    .eq("userid", userid);
+
+  if (error) {
+    alert("Failed to update house");
+    return;
+  }
+
+  setUsers((prev) =>
+    prev.map((user) =>
+      user.userid === userid
+        ? { ...user, house }
+        : user
+    )
+  );
+};
 
   const deleteUser = async (userid: string) => {
     const confirmDelete = confirm("Delete this user?");
@@ -50,19 +74,33 @@ export default function UserAdmin() {
         {users.map((user) => (
           <li key={user.userid} className="event-admin-card">
   <div className="user-admin-row">
-    <div className="user-admin-info">
-      <div className="user-admin-name">
-        {user.firstname} {user.lastname}
-      </div>
+  <div className="user-admin-info">
+    <div className="user-admin-name">
+      {user.firstname} {user.lastname}
     </div>
-
-    <button
-      className="event-admin-delete"
-      onClick={() => deleteUser(user.userid)}
-    >
-      Delete
-    </button>
   </div>
+
+  <select
+    className="user-admin-house"
+    value={user.house ?? ""}
+    onChange={(e) =>
+      updateHouse(user.userid, e.target.value)
+    }
+  >
+    {houses.map((house) => (
+      <option key={house} value={house}>
+        {house}
+      </option>
+    ))}
+  </select>
+
+  <button
+    className="event-admin-delete"
+    onClick={() => deleteUser(user.userid)}
+  >
+    Delete
+  </button>
+</div>
 </li>
         ))}
       </ul>
