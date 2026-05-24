@@ -12,9 +12,11 @@ type EventCardProps = {
   eventid: string;
   eventname: string;
   participants: string[];
-  firstplace: string | null;
-  secondplace: string | null;
-  thirdplace: string | null;
+
+  firstplaceuserids: string[];
+  secondplaceuserids: string[];
+  thirdplaceuserids: string[];
+
   users: User[];
 };
 
@@ -22,21 +24,33 @@ export default function EventCard({
   eventid,
   eventname,
   participants,
-  firstplace,
-  secondplace,
-  thirdplace,
+  firstplaceuserids,
+  secondplaceuserids,
+  thirdplaceuserids,
   users,
 }: EventCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const userMap = new Map(users.map((user) => [user.userid, user]));
+
   const participantsList = participants ?? [];
 
-  const getUsername = (userid: string | null) => {
-    if (!userid) return "—";
+  const getUsername = (userid: string) => {
     const user = userMap.get(userid);
     if (!user) return "Unknown";
     return `${user.firstname ?? ""} ${user.lastname ?? ""}`.trim();
+  };
+
+  const renderUserList = (ids: string[]) => {
+    if (!ids || ids.length === 0) {
+      return <div className="event-participant-empty">None</div>;
+    }
+
+    return ids.map((id) => (
+      <div key={id} className="event-participant-pill">
+        {getUsername(id)}
+      </div>
+    ));
   };
 
   return (
@@ -55,38 +69,49 @@ export default function EventCard({
 
       {isExpanded && (
         <div className="event-card-details">
-            <div className="event-detail-section">
-              <h3>Participants ({participantsList.length})</h3>
+          {/* PARTICIPANTS */}
+          <div className="event-detail-section">
+            <h3>Participants ({participantsList.length})</h3>
 
-              <div className="event-participants-grid">
-                {participantsList.length === 0 ? (
-                  <div className="event-participant-empty">
-                    No participants
+            <div className="event-participants-grid">
+              {participantsList.length === 0 ? (
+                <div className="event-participant-empty">
+                  No participants
+                </div>
+              ) : (
+                participantsList.map((id) => (
+                  <div key={id} className="event-participant-pill">
+                    {getUsername(id)}
                   </div>
-                ) : (
-                  participantsList.map((participantId) => (
-                    <div key={participantId} className="event-participant-pill">
-                      {getUsername(participantId)}
-                    </div>
-                  ))
-                )}
-              </div>
+                ))
+              )}
             </div>
+          </div>
 
+          {/* PODIUM */}
           <div className="event-detail-section">
             <h3>Placements</h3>
+
             <div className="event-placements">
               <div className="placement">
                 <span className="placement-label">🥇 1st Place:</span>
-                <span className="placement-value">{getUsername(firstplace)}</span>
+                <div className="event-participants-grid">
+                  {renderUserList(firstplaceuserids ?? [])}
+                </div>
               </div>
+
               <div className="placement">
                 <span className="placement-label">🥈 2nd Place:</span>
-                <span className="placement-value">{getUsername(secondplace)}</span>
+                <div className="event-participants-grid">
+                  {renderUserList(secondplaceuserids ?? [])}
+                </div>
               </div>
+
               <div className="placement">
                 <span className="placement-label">🥉 3rd Place:</span>
-                <span className="placement-value">{getUsername(thirdplace)}</span>
+                <div className="event-participants-grid">
+                  {renderUserList(thirdplaceuserids ?? [])}
+                </div>
               </div>
             </div>
           </div>

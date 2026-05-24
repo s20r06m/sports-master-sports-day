@@ -8,9 +8,15 @@ type Event = {
   eventname: string;
   created_at: string;
   participants: string[];
+  /*
   firstplace: string | null;
   secondplace: string | null;
   thirdplace: string | null;
+  */
+  firstplaceuserids: string[];
+  secondplaceuserids: string[];
+  thirdplaceuserids: string[];
+
   completed: boolean;
 };
 
@@ -21,11 +27,11 @@ type User = {
 };
 export const dynamic = "force-dynamic";
 export default async function EventsPage() {
-  
+
   const { data: eventData, error: eventError } = await supabase
     .from("events")
     .select(
-      "eventid, eventorder, eventname, created_at, participants, firstplace, secondplace, thirdplace, completed"
+      "eventid, eventorder, eventname, created_at, participants, firstplaceuserids, secondplaceuserids, thirdplaceuserids, completed"
     )
     .order("eventorder", { ascending: true });
 
@@ -64,15 +70,15 @@ export default async function EventsPage() {
                 eventid={event.eventid}
                 eventname={event.eventname}
                 participants={event.participants}
-                firstplace={event.firstplace}
-                secondplace={event.secondplace}
-                thirdplace={event.thirdplace}
+                firstplaceuserids={event.firstplaceuserids}
+secondplaceuserids={event.secondplaceuserids}
+thirdplaceuserids={event.thirdplaceuserids}
                 users={users}
               />
             ))}
           </ul>
         )}
-      
+
         <h1><br></br>Completed Events</h1>
         {completedEvents.length === 0 ? (
           <p>No completed events.</p>
@@ -84,9 +90,9 @@ export default async function EventsPage() {
                 eventid={event.eventid}
                 eventname={event.eventname}
                 participants={event.participants}
-                firstplace={event.firstplace}
-                secondplace={event.secondplace}
-                thirdplace={event.thirdplace}
+                firstplaceuserids={event.firstplaceuserids}
+                secondplaceuserids={event.secondplaceuserids}
+                thirdplaceuserids={event.thirdplaceuserids}
                 users={users}
               />
             ))}
