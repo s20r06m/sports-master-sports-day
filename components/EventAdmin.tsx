@@ -220,22 +220,22 @@ export default function EventAdmin() {
     });
 
     (allEvents ?? []).forEach((event) => {
-      (event.participants ?? []).forEach((id) => {
-        if (stats[id]) stats[id].participationcount++;
-      });
+  (event.participants ?? []).forEach((id: string) => {
+    if (stats[id]) stats[id].participationcount++;
+  });
 
-      (event.firstplaceuserids ?? []).forEach((id) => {
-        if (stats[id]) stats[id].firstplacecount++;
-      });
+  (event.firstplaceuserids ?? []).forEach((id: string) => {
+    if (stats[id]) stats[id].firstplacecount++;
+  });
 
-      (event.secondplaceuserids ?? []).forEach((id) => {
-        if (stats[id]) stats[id].secondplacecount++;
-      });
+  (event.secondplaceuserids ?? []).forEach((id: string) => {
+    if (stats[id]) stats[id].secondplacecount++;
+  });
 
-      (event.thirdplaceuserids ?? []).forEach((id) => {
-        if (stats[id]) stats[id].thirdplacecount++;
-      });
-    });
+  (event.thirdplaceuserids ?? []).forEach((id: string) => {
+    if (stats[id]) stats[id].thirdplacecount++;
+  });
+});
 
     await Promise.all(
       Object.entries(stats).map(([userid, values]) =>
