@@ -61,26 +61,38 @@ export default function HomePage() {
   const minutes = Math.max(0, Math.floor((diff / (1000 * 60)) % 60));
   const seconds = Math.max(0, Math.floor((diff / 1000) % 60));
 
-  function openCalendar() {
-  if (!eventDate) return;
+  function addToCalendar() {
+  if (!eventDate) return; // important guard
 
   const start = new Date(eventDate);
   const end = new Date(start.getTime() + 3 * 60 * 60 * 1000);
 
   const format = (date: Date) =>
-    date.toISOString().replace(/-|:|\.\d+/g, "");
+    date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 
-  const title = encodeURIComponent("Sports Master's Sports Day");
-  const details = encodeURIComponent(
-    "Casual park games, friendly competition, and social sports day."
-  );
-  const location = encodeURIComponent("Bute Park, Cardiff");
+  const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Sports Day//EN
+BEGIN:VEVENT
+UID:${crypto.randomUUID()}
+DTSTAMP:${format(new Date())}
+DTSTART:${format(start)}
+DTEND:${format(end)}
+SUMMARY:Sports Master's Sports Day
+LOCATION:Bute Park, Cardiff
+DESCRIPTION:Casual park games, friendly competition, and social sports day.
+END:VEVENT
+END:VCALENDAR`;
 
-  const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${format(
-    start
-  )}/${format(end)}&details=${details}&location=${location}`;
+  const blob = new Blob([icsContent], { type: "text/calendar" });
+  const url = URL.createObjectURL(blob);
 
-  window.open(url, "_blank");
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "sports-day.ics";
+  link.click();
+
+  URL.revokeObjectURL(url);
 }
 
   return (
@@ -148,7 +160,7 @@ export default function HomePage() {
                 <div><span>{minutes}</span><small>Min</small></div>
                 <div><span>{seconds}</span><small>Sec</small></div>
               </div>
-              <button className="location-nav-button" onClick={openCalendar}>
+              <button className="location-nav-button" onClick={addToCalendar}>
                 Add to Calendar
               </button>
             </>
