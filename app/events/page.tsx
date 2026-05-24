@@ -19,8 +19,9 @@ type User = {
   firstname: string | null;
   lastname: string | null;
 };
-
+export const dynamic = "force-dynamic";
 export default async function EventsPage() {
+  
   const { data: eventData, error: eventError } = await supabase
     .from("events")
     .select(
