@@ -25,6 +25,8 @@ type Event = {
 
   completed: boolean;
   created_at: string;
+
+  suggested?: boolean | null;
 };
 
 /* ================= COMPONENT ================= */
@@ -278,8 +280,13 @@ export default function EventAdmin() {
 
   if (loading) return <p>Loading events...</p>;
 
-  const upcoming = events.filter((e) => !e.completed);
-  const completed = events.filter((e) => e.completed);
+  const upcoming = events.filter(
+  (e) => !e.completed && !e.suggested
+);
+
+const completed = events.filter(
+  (e) => e.completed && !e.suggested
+);
 
   /* ================= RENDER ================= */
 

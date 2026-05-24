@@ -1,6 +1,8 @@
 import { supabase } from "@/lib/supabase";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import EventCard from "@/components/EventCard";
+import SuggestEvent from "@/components/SuggestEvent";
+import SuggestedEventItem from "@/components/SuggestedEventItem";
 
 type Event = {
   eventid: string;
@@ -31,9 +33,10 @@ export default async function EventsPage() {
   const { data: eventData, error: eventError } = await supabase
     .from("events")
     .select(
-      "eventid, eventorder, eventname, created_at, participants, firstplaceuserids, secondplaceuserids, thirdplaceuserids, completed"
-    )
-    .order("eventorder", { ascending: true });
+    "eventid, eventorder, eventname, created_at, participants, firstplaceuserids, secondplaceuserids, thirdplaceuserids, completed, suggested"
+  )
+  .order("eventorder", { ascending: true });
+
 
   const { data: userData, error: userError } = await supabase
     .from("users")
@@ -53,8 +56,11 @@ export default async function EventsPage() {
 
   const events = (eventData ?? []) as Event[];
   const users = (userData ?? []) as User[];
-  const upcomingEvents = events.filter((event) => !event.completed);
-  const completedEvents = events.filter((event) => event.completed);
+  const realEvents = events.filter((e) => !e.suggested);
+
+const upcomingEvents = realEvents.filter((e) => !e.completed);
+const completedEvents = realEvents.filter((e) => e.completed);
+const suggestedEvents = events.filter((e) => e.suggested);
 
   return (
     <ProtectedRoute>
@@ -98,6 +104,23 @@ thirdplaceuserids={event.thirdplaceuserids}
             ))}
           </ul>
         )}
+        {/* Suggested Events */}
+<h1><br />Suggested Events</h1>
+
+<SuggestEvent />
+
+{suggestedEvents.length === 0 ? (
+  <p>No suggested events yet.</p>
+) : (
+  <ul className="events-list">
+    {suggestedEvents.map((event) => (
+      <SuggestedEventItem
+        key={event.eventid}
+        eventname={event.eventname}
+      />
+    ))}
+  </ul>
+)}
       </main>
     </ProtectedRoute>
   );
