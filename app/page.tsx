@@ -49,31 +49,53 @@ return (
 
       {/* Countdown */}
       <li className="home-card highlight">
-        <h2>Countdown to Event</h2>
+  {isPast ? (
+    <p className="big-text">🏁 Event in progress / completed</p>
+  ) : (
+    <>
+      <h2>on</h2>
+      <p
+        style={{
+          letterSpacing: "4px",
+          fontSize: "var(--text-hero)",
+          fontWeight: 800,
+        }}
+      >
+        13th JUNE 2026
+      </p>
 
-        {isPast ? (
-          <p className="big-text">🏁 Event in progress / completed</p>
-        ) : (
-          <div className="countdown-grid">
-            <div>
-              <span>{days}</span>
-              <small>Days</small>
-            </div>
-            <div>
-              <span>{hours}</span>
-              <small>Hours</small>
-            </div>
-            <div>
-              <span>{minutes}</span>
-              <small>Min</small>
-            </div>
-            <div>
-              <span>{seconds}</span>
-              <small>Sec</small>
-            </div>
-          </div>
-        )}
-      </li>
+      <h2>at</h2>
+      <p
+        style={{
+          letterSpacing: "4px",
+          fontSize: "var(--text-hero)",
+          fontWeight: 800,
+        }}
+      >
+        10:00 AM
+      </p>
+
+      <div className="countdown-grid">
+        <div>
+          <span>{days}</span>
+          <small>Days</small>
+        </div>
+        <div>
+          <span>{hours}</span>
+          <small>Hours</small>
+        </div>
+        <div>
+          <span>{minutes}</span>
+          <small>Min</small>
+        </div>
+        <div>
+          <span>{seconds}</span>
+          <small>Sec</small>
+        </div>
+      </div>
+    </>
+  )}
+</li>
 
       {/* Location */}
       <li className="home-card">

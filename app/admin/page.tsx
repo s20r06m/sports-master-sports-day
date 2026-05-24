@@ -1,6 +1,7 @@
 import ProtectedRoute from "@/components/ProtectedRoute";
 import CurrentUserBar from "@/components/CurrentUserBar";
 import EventAdmin from "@/components/EventAdmin";
+import UserAdmin from "@/components/UserAdmin";
 
 export default function AdminPage() {
   return (
@@ -8,19 +9,19 @@ export default function AdminPage() {
       <main>
         <CurrentUserBar />
 
-        <h1>Admin</h1>
-
         <div className="admin-sections">
-
+          {/* EVENTS */}
+          <h1>Event Management</h1>
           <div className="admin-card">
-            <h2>Event Management</h2>
             <EventAdmin />
           </div>
 
-          <div className="admin-card">
-            <h2>User Management</h2>
-          </div>
+          {/* USERS */}
+          <h1>User Management</h1>
 
+          <div className="admin-card">
+            <UserAdmin />
+          </div>
         </div>
       </main>
     </ProtectedRoute>

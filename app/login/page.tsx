@@ -88,24 +88,38 @@ const house = houses[index];
   };
 
   return (
-    <div>
+   <div className="login-page">
+    <div className="login-card">
       <h1>Login</h1>
 
-      <input
-        placeholder="First Name"
-        value={firstname}
-        onChange={(e) => setFirstname(e.target.value)}
-      />
+      <p className="login-subtitle">
+        Enter your name to join Sports Master's Sports Day.
+      </p>
 
-      <input
-        placeholder="Last Name"
-        value={lastname}
-        onChange={(e) => setLastname(e.target.value)}
-      />
+      <div className="login-form">
+        <input
+          className="login-input"
+          placeholder="First Name"
+          value={firstname}
+          onChange={(e) => setFirstname(e.target.value)}
+        />
 
-      <button onClick={handleLogin} disabled={loading}>
-        {loading ? "Loading..." : "Login"}
-      </button>
+        <input
+          className="login-input"
+          placeholder="Last Name"
+          value={lastname}
+          onChange={(e) => setLastname(e.target.value)}
+        />
+
+        <button
+          className="login-button"
+          onClick={handleLogin}
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Login"}
+        </button>
+      </div>
     </div>
-  );
+  </div>
+);
 }

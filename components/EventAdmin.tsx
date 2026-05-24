@@ -342,7 +342,7 @@ await updateUserStats();
           renderEvent(event)
         )}
       </div>
-
+        <br></br>
       <h2>Completed Events</h2>
 
       <div className="event-admin-list">

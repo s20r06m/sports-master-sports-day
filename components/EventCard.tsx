@@ -55,18 +55,23 @@ export default function EventCard({
 
       {isExpanded && (
         <div className="event-card-details">
-          <div className="event-detail-section">
-            <h3>Participants ({participantsList.length})</h3>
-            <ul className="event-participants-list">
-              {participantsList.length === 0 ? (
-                <li>No participants</li>
-              ) : (
-                participantsList.map((participantId) => (
-                  <li key={participantId}>{getUsername(participantId)}</li>
-                ))
-              )}
-            </ul>
-          </div>
+            <div className="event-detail-section">
+              <h3>Participants ({participantsList.length})</h3>
+
+              <div className="event-participants-grid">
+                {participantsList.length === 0 ? (
+                  <div className="event-participant-empty">
+                    No participants
+                  </div>
+                ) : (
+                  participantsList.map((participantId) => (
+                    <div key={participantId} className="event-participant-pill">
+                      {getUsername(participantId)}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
 
           <div className="event-detail-section">
             <h3>Placements</h3>
