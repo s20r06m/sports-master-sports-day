@@ -115,11 +115,12 @@ thirdplaceuserids={event.thirdplaceuserids}
 ) : (
   <ul className="events-list">
     {suggestedEvents.map((event) => (
-      <SuggestedEventItem
-        key={event.eventid}
-        eventname={event.eventname}
-      />
-    ))}
+  <SuggestedEventItem
+    key={event.eventid}
+    eventid={event.eventid}
+    eventname={event.eventname}
+  />
+))}
   </ul>
 )}
       </main>
