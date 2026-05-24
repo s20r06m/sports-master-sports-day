@@ -61,40 +61,26 @@ export default function HomePage() {
   const minutes = Math.max(0, Math.floor((diff / (1000 * 60)) % 60));
   const seconds = Math.max(0, Math.floor((diff / 1000) % 60));
 
-  function addToCalendar() {
+  function openCalendar() {
   if (!eventDate) return;
 
   const start = new Date(eventDate);
-
-  // default 3 hour event (adjust if needed)
   const end = new Date(start.getTime() + 3 * 60 * 60 * 1000);
 
   const format = (date: Date) =>
-    date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+    date.toISOString().replace(/-|:|\.\d+/g, "");
 
-  const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Sports Day//EN
-BEGIN:VEVENT
-UID:${crypto.randomUUID()}
-DTSTAMP:${format(new Date())}
-DTSTART:${format(start)}
-DTEND:${format(end)}
-SUMMARY:Sports Master's Sports Day
-LOCATION:Bute Park, Cardiff
-DESCRIPTION:Casual park games, friendly competition, and social sports day.
-END:VEVENT
-END:VCALENDAR`;
+  const title = encodeURIComponent("Sports Master's Sports Day");
+  const details = encodeURIComponent(
+    "Casual park games, friendly competition, and social sports day."
+  );
+  const location = encodeURIComponent("Bute Park, Cardiff");
 
-  const blob = new Blob([icsContent], { type: "text/calendar" });
-  const url = URL.createObjectURL(blob);
+  const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${format(
+    start
+  )}/${format(end)}&details=${details}&location=${location}`;
 
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "sports-day.ics";
-  link.click();
-
-  URL.revokeObjectURL(url);
+  window.open(url, "_blank");
 }
 
   return (
@@ -162,9 +148,9 @@ END:VCALENDAR`;
                 <div><span>{minutes}</span><small>Min</small></div>
                 <div><span>{seconds}</span><small>Sec</small></div>
               </div>
-              <button className="location-nav-button" onClick={addToCalendar}>
-  Add to Calendar
-</button>
+              <button className="location-nav-button" onClick={openCalendar}>
+                Add to Calendar
+              </button>
             </>
           )}
         </li>
