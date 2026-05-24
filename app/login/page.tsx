@@ -100,18 +100,28 @@ export default function LoginPage() {
 
         <div className="login-form">
           <input
-            className="login-input"
-            placeholder="First Name"
-            value={firstname}
-            onChange={(e) => setFirstname(e.target.value.toUpperCase())}
-          />
+  className="login-input"
+  placeholder="First Name"
+  value={firstname}
+  maxLength={14}
+  onChange={(e) =>
+    setFirstname(
+      e.target.value.toUpperCase().slice(0, 14)
+    )
+  }
+/>
 
-          <input
-            className="login-input"
-            placeholder="Last Name"
-            value={lastname}
-            onChange={(e) => setLastname(e.target.value.toUpperCase())}
-          />
+<input
+  className="login-input"
+  placeholder="Last Name"
+  value={lastname}
+  maxLength={14}
+  onChange={(e) =>
+    setLastname(
+      e.target.value.toUpperCase().slice(0, 14)
+    )
+  }
+/>
 
           <button
             className="login-button"
