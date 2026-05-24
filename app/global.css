@@ -90,9 +90,7 @@ html {
   --transition-fast: 0.2s ease-in-out;
 }
 
-/* =========================
-   BASE STYLES
-========================= */
+/* ============= BASE STYLES ============= */
 
 * {
   box-sizing: border-box;
@@ -125,9 +123,7 @@ p {
   margin: 0;
 }
 
-/* =========================
-   SHARED UTILITIES
-========================= */
+/* =========== SHARED UTILITIES ============= */
 
 .surface-card {
   background: var(--surface);
@@ -145,9 +141,7 @@ p {
   gap: var(--space-xl);
 }
 
-/* =========================
-   HEADER
-========================= */
+/* ============= HEADER ============== */
 
 .site-header {
   width: 100%;
@@ -213,9 +207,7 @@ p {
   outline: none;
 }
 
-/* =========================
-   LOGIN PAGE
-========================= */
+/* =========== LOGIN PAGE ============ */
 
 .login-page {
   width: 100%;
@@ -350,9 +342,7 @@ p {
   color: var(--text-soft);
 }
 
-/* =========================
-   TEAM GRID (2x2)
-========================= */
+/* =============== TEAM GRID (2x2) ============ */
 
 .team-grid {
   width: 100%;
@@ -391,7 +381,6 @@ p {
   font-weight: 800;
 }
 
-/* reuse your existing house colours */
 .team-card.house-red {
   background: var(--house-red-bg);
   border-color: var(--house-red-border);
@@ -412,9 +401,7 @@ p {
   border-color: var(--house-yellow-border);
 }
 
-/* =========================
-   LEADERBOARD
-========================= */
+/* ============== LEADERBOARD ============== */
 
 .leaderboard-list {
   list-style: none;
@@ -516,9 +503,7 @@ p {
   }
 }
 
-/* =========================
-   CURRENT USER BAR
-========================= */
+/* =========== CURRENT USER BAR ============ */
 
 .current-user-bar {
   margin-bottom: 1.5rem;
@@ -553,9 +538,7 @@ p {
   transform: translateY(-1px);
 }
 
-/* =========================
-   HOME PAGE
-========================= */
+/* =========== HOME PAGE ============== */
 
 .home-container {
   max-width: var(--container-width);
@@ -674,9 +657,258 @@ p {
   color: var(--text-muted);
 }
 
-/* =========================
-   EVENTS PAGE
-========================= */
+/*-------- Admin -------------*/
+
+.admin-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.admin-card {
+  background: var(--surface, #111827);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1rem;
+}
+
+.admin-card h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+/* Event Admin */
+
+.event-admin {
+  width: 100%;
+}
+
+.event-admin-create {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border: none;
+  border-radius: 12px;
+  background: #3b82f6;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.event-admin-create:hover {
+  filter: brightness(1.08);
+}
+
+.event-admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.event-admin-card {
+  background: #1f2937;
+  border-radius: 14px;
+  padding: 0.75rem;
+  transition: 0.2s ease;
+}
+
+.event-admin-card:hover {
+  background: #273549;
+}
+
+.event-admin-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.event-admin-drag {
+  font-size: 1.5rem;
+  color: #94a3b8;
+  cursor: grab;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.event-admin-name {
+  flex: 1;
+  min-width: 0;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: white;
+  font-size: 1rem;
+}
+
+.event-admin-name:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.event-admin-expand {
+  border: none;
+  background: transparent;
+  color: #cbd5e1;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  flex-shrink: 0;
+}
+
+.event-admin-panel {
+  margin-top: 1rem;
+}
+
+.event-admin-select-all {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 10px;
+  background: #334155;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.event-admin-select-all:hover {
+  background: #475569;
+}
+
+.event-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.event-admin-player {
+  padding: 0.9rem;
+  border: none;
+  border-radius: 10px;
+  background: #334155;
+  color: white;
+  cursor: pointer;
+  transition: 0.15s ease;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.event-admin-player:hover {
+  background: #475569;
+}
+
+.event-admin-player.selected {
+  background: #22c55e;
+  color: black;
+  font-weight: 700;
+}
+
+.event-admin-podium {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.event-admin-podium select {
+  width: 100%;
+  padding: 0.85rem;
+  border-radius: 10px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: white;
+  font-size: 0.95rem;
+}
+
+.event-admin-podium select:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.event-admin-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.event-admin-actions label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.event-admin-actions input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.event-admin-delete {
+  padding: 0.85rem 1.25rem;
+  border: none;
+  border-radius: 10px;
+  background: #ef4444;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.2s ease;
+}
+
+.event-admin-delete:hover {
+  background: #dc2626;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  .event-admin-header {
+    gap: 0.5rem;
+  }
+
+  .event-admin-name {
+    font-size: 0.95rem;
+    padding: 0.7rem;
+  }
+
+  .event-admin-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .event-admin-player {
+    min-height: 56px;
+    font-size: 0.9rem;
+  }
+
+  .event-admin-actions {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .event-admin-actions label,
+  .event-admin-delete {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .event-admin-delete {
+    min-height: 56px;
+  }
+
+  .event-admin-actions input[type="checkbox"] {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* ==========  EVENTS PAGE ============ */
 
 .events-list {
   list-style: none;

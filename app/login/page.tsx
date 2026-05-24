@@ -38,7 +38,6 @@ export default function LoginPage() {
         user = existingUser;
 
         localStorage.setItem("user", JSON.stringify(user));
-        window.dispatchEvent(new Event("auth-changed"));
 
         alert(`Welcome back! You are in ${user.house} house`);
         router.push("/leaderboard");
@@ -61,7 +60,6 @@ const house = houses[index];
         lastname,
         role: "user",
         house,
-        totalpoints: 0,
         participationcount: 0,
         firstplacecount: 0,
         secondplacecount: 0,
@@ -77,7 +75,6 @@ const house = houses[index];
       if (insertError) throw insertError;
 
       localStorage.setItem("user", JSON.stringify(insertedUser));
-      window.dispatchEvent(new Event("auth-changed"));
 
       alert(`New user created! You are in ${house} house`);
 
@@ -91,52 +88,24 @@ const house = houses[index];
   };
 
   return (
-  <main className="login-page">
-    <div className="login-card">
-      <div className="login-header">
-        <h1>Login</h1>
+    <div>
+      <h1>Login</h1>
 
-        <p className="login-subtitle">
-          Enter your name to join Sports Master&apos;s Sports Day
-        </p>
-      </div>
+      <input
+        placeholder="First Name"
+        value={firstname}
+        onChange={(e) => setFirstname(e.target.value)}
+      />
 
-      <div className="login-form">
-        <div className="form-group">
-          <label className="form-label">First Name</label>
+      <input
+        placeholder="Last Name"
+        value={lastname}
+        onChange={(e) => setLastname(e.target.value)}
+      />
 
-          <input
-            className="form-input"
-            placeholder="Enter first name"
-            value={firstname}
-            onChange={(e) => setFirstname(e.target.value)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">Last Name</label>
-
-          <input
-            className="form-input"
-            placeholder="Enter last name"
-            value={lastname}
-            onChange={(e) => setLastname(e.target.value)}
-          />
-        </div>
-
-        <button
-          className="login-button"
-          onClick={handleLogin}
-          disabled={loading}
-        >
-          {loading ? "Loading..." : "Continue"}
-        </button>
-      </div>
-
-      <div className="login-footer">
-        Returning players will automatically sign in.
-      </div>
+      <button onClick={handleLogin} disabled={loading}>
+        {loading ? "Loading..." : "Login"}
+      </button>
     </div>
-  </main>
-);
+  );
 }

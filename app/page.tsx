@@ -33,10 +33,17 @@ return (
   <main className="home-container">
     <ul className="home-list">
 
-      <li>
-        <h1>Welcome to Sports Master</h1>
-        <p className="muted">
-          Your one-stop hub for all things sports day. Check out upcoming events, track your points, and see how your house stacks up!
+      {/* Hero */}
+      <li style={{ textTransform: "uppercase", textAlign: "center" }}>
+        <h2>Welcome to</h2>
+        <p
+          style={{
+            letterSpacing: "4px",
+            fontSize: "var(--text-hero)",
+            fontWeight: 800,
+          }}
+        >
+          Sports Master's Sports Day
         </p>
       </li>
 
@@ -79,7 +86,10 @@ return (
 
       {/* Footer Info */}
       <li>
-        <p className="muted">
+        <p
+          className="muted"
+          style={{ textAlign: "center" }}
+        >
           Compete in events. Earn points. Represent your house. Win glory.
         </p>
       </li>

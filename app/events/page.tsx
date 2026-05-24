@@ -71,8 +71,8 @@ export default async function EventsPage() {
             ))}
           </ul>
         )}
-
-        <h1>Completed Events</h1>
+      
+        <h1><br></br>Completed Events</h1>
         {completedEvents.length === 0 ? (
           <p>No completed events.</p>
         ) : (

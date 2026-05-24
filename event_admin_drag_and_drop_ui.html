@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Event Admin UI</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 100%;
+  max-width: 420px;
+  background: #111827;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+h2 {
+  font-size: 13px;
+  margin: 18px 0 10px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+button {
+  margin-top: 12px;
+  padding: 14px;
+  width: 100%;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.event {
+  background: #1f2937;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  transition: background 0.2s;
+}
+
+.event.dragging {
+  opacity: 0.6;
+  outline: 2px dashed #60a5fa;
+}
+
+.event-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.drag-handle {
+  cursor: grab;
+  font-size: 22px;
+  padding: 6px;
+  user-select: none;
+  color: #94a3b8;
+}
+
+.event-name {
+  flex: 1;
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.dropdown-toggle {
+  font-size: 22px;
+  cursor: pointer;
+  padding: 6px;
+  color: #94a3b8;
+}
+
+.panel {
+  margin-top: 12px;
+  display: none;
+}
+
+h4 {
+  margin: 10px 0 8px;
+  font-size: 14px;
+  color: #cbd5e1;
+}
+
+.select-all {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #334155;
+  color: white;
+  font-size: 14px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.player {
+  background: #334155;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.player.selected {
+  background: #22c55e;
+  color: black;
+}
+
+.dropdown {
+  margin-top: 10px;
+  background: #334155;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.dropdown-list {
+  display: none;
+  margin-top: 8px;
+  background: #1e293b;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.option {
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.option:hover {
+  background: #475569;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.6);
+}
+
+.bottom-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.delete-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #ef4444;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="sidebar">
+
+    <button onclick="addEvent()">+ Create Event</button>
+
+    <h2>Upcoming Events</h2>
+    <div id="upcoming"></div>
+
+    <h2>Completed Events</h2>
+    <div id="completed"></div>
+
+  </div>
+</div>
+
+<script>
+let players = ["Alice","Bob","Charlie","David","Eva","Frank"];
+let events = [];
+let draggingIndex = null;
+
+function render() {
+  const upcoming = document.getElementById("upcoming");
+  const completed = document.getElementById("completed");
+
+  upcoming.innerHTML = "";
+  completed.innerHTML = "";
+
+  events.forEach((event, index) => {
+    const el = document.createElement("div");
+    el.className = "event";
+
+    el.ondragover = (e) => e.preventDefault();
+
+    el.ondragenter = () => el.style.outline = "2px solid #60a5fa";
+    el.ondragleave = () => el.style.outline = "none";
+
+    el.ondrop = () => {
+      if (draggingIndex === null || draggingIndex === index) return;
+      const moved = events.splice(draggingIndex, 1)[0];
+      events.splice(index, 0, moved);
+      draggingIndex = null;
+      render();
+    };
+
+    const panelStyle = event.open ? "block" : "none";
+    const assigned = Object.values(event.podium);
+
+    el.innerHTML = `
+      <div class="event-header">
+        <span class="drag-handle" draggable="true">≡</span>
+        <input class="event-name" value="${event.name}" 
+          oninput="updateEventName(${index}, this.value)"
+          onclick="event.stopPropagation()" />
+        <span class="dropdown-toggle" onclick="togglePanel(${index}); event.stopPropagation()">▾</span>
+      </div>
+
+      <div class="panel" style="display:${panelStyle}" onclick="event.stopPropagation()">
+        <h4>Participants</h4>
+
+        <button class="select-all" onclick="toggleSelectAll(${index}); event.stopPropagation()">
+          Select All
+        </button>
+
+        <div class="grid">
+          ${players.map(p => `
+            <div class="player ${event.participants.includes(p) ? "selected" : ""}"
+              onclick="togglePlayer(${index},'${p}'); event.stopPropagation();">${p}</div>
+          `).join("")}
+        </div>
+
+        <h4>Podium</h4>
+        ${["first","second","third"].map(place => {
+          const options = event.participants.filter(p => 
+            !assigned.includes(p) || event.podium[place] === p
+          );
+
+          return `
+          <div class="dropdown" onclick="toggleDropdown(this); event.stopPropagation();">
+            ${place.toUpperCase()}: ${event.podium[place] || "Select"}
+            <div class="dropdown-list">
+              ${options.map(p => `
+                <div class="option" onclick="setPodium(${index},'${place}','${p}'); event.stopPropagation();">${p}</div>
+              `).join("")}
+            </div>
+          </div>
+        `;}).join("")}
+
+        <div class="bottom-actions" onclick="event.stopPropagation()">
+          <label>
+            <input type="checkbox" onchange="toggleComplete(${index})" ${event.completed ? "checked" : ""} />
+            Completed
+          </label>
+
+          <button class="delete-btn" onclick="deleteEvent(${index}); event.stopPropagation();">
+            Delete
+          </button>
+        </div>
+      </div>
+    `;
+
+    const handle = el.querySelector(".drag-handle");
+
+    handle.addEventListener("dragstart", () => {
+      draggingIndex = index;
+      el.classList.add("dragging");
+    });
+
+    handle.addEventListener("dragend", () => {
+      draggingIndex = null;
+      el.classList.remove("dragging");
+    });
+
+    const parent = event.completed ? completed : upcoming;
+    parent.appendChild(el);
+  });
+}
+
+function addEvent() {
+  events.unshift({
+    name: "New Event",
+    participants: [],
+    podium: {},
+    completed: false,
+    open: false
+  });
+  render();
+}
+
+function deleteEvent(i) {
+  events.splice(i, 1);
+  render();
+}
+
+function updateEventName(i, value) {
+  events[i].name = value;
+}
+
+function togglePanel(i) {
+  events[i].open = !events[i].open;
+  render();
+}
+
+function togglePlayer(i, p) {
+  const e = events[i];
+  if (e.participants.includes(p)) {
+    e.participants = e.participants.filter(x => x !== p);
+    Object.keys(e.podium).forEach(k => {
+      if (e.podium[k] === p) delete e.podium[k];
+    });
+  } else {
+    e.participants.push(p);
+  }
+  render();
+}
+
+function toggleSelectAll(i) {
+  const e = events[i];
+  const allSelected = players.every(p => e.participants.includes(p));
+
+  if (allSelected) {
+    e.participants = [];
+    e.podium = {};
+  } else {
+    e.participants = [...players];
+  }
+  render();
+}
+
+function toggleDropdown(el) {
+  const list = el.querySelector(".dropdown-list");
+  list.style.display = list.style.display === "block" ? "none" : "block";
+}
+
+function setPodium(i, place, player) {
+  const e = events[i];
+
+  Object.keys(e.podium).forEach(k => {
+    if (e.podium[k] === player) delete e.podium[k];
+  });
+
+  if (e.podium[place] === player) {
+    delete e.podium[place];
+  } else {
+    e.podium[place] = player;
+  }
+
+  render();
+}
+
+function toggleComplete(i) {
+  events[i].completed = !events[i].completed;
+  render();
+}
+
+render();
+</script>
+
+</body>
+</html>
