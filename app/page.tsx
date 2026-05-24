@@ -1,5 +1,6 @@
 "use client";
 
+import LocationNavButton from "@/components/localNavButton";
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
@@ -100,10 +101,11 @@ return (
       {/* Location */}
       <li className="home-card">
         <h2>Location</h2>
-        <p className="big-text">Sports Field</p>
+        <p className="big-text">Bute Park, Cardiff</p>
         <p className="muted">
-          Exact venue details to be confirmed by admin
+          Exact venue details to be confirmed by closer to the event. Stay tuned!
         </p>
+        <LocationNavButton />
       </li>
 
       {/* Footer Info */}

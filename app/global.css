@@ -608,6 +608,43 @@ p {
   font-size: 0.9rem;
   color: var(--text-muted);
 }
+.location-nav-button {
+  padding: var(--space-sm) var(--space-md);
+
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+
+  background: var(--surface-light);
+  color: var(--foreground);
+
+  font-size: var(--text-sm);
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.location-nav-button:hover {
+  background: var(--surface-lighter);
+  transform: translateY(-1px);
+}
+
+/* disabled state */
+.location-nav-button-disabled {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+
+  color: var(--text-muted);
+
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.location-nav-button-disabled:hover {
+  background: var(--surface);
+  transform: none;
+}
 
 /*-------- Admin -------------*/
 
@@ -634,7 +671,7 @@ p {
 .event-admin-create {
   width: 100%;
   padding: var(--space-md);
-  margin-bottom: var(--space-xl);
+  margin-bottom: var(--space-sm);
 
   border: 1px solid rgba(59, 130, 246, 0.35);
   border-radius: var(--radius-lg);
