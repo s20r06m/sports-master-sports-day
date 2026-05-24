@@ -2,14 +2,39 @@
 
 import LocationNavButton from "@/components/localNavButton";
 import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
+
+const ROW_ID = "0aef1ed7-0c22-48bc-b41b-65fb77d08c75";
+
+type Details = {
+  location: string | null;
+  dateandtime: string | null;
+};
 
 export default function HomePage() {
-  // 🔧 Set your event date/time here
-  const eventDate = new Date("2026-06-13T10:00:00Z");
-
+  const [eventDate, setEventDate] = useState<Date | null>(null);
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
+    const load = async () => {
+      const { data, error } = await supabase
+        .from("details")
+        .select("dateandtime")
+        .eq("id", ROW_ID)
+        .single();
+
+      if (error) {
+        console.error("Failed to load event date:", error);
+        return;
+      }
+
+      if (data?.dateandtime) {
+        setEventDate(new Date(data.dateandtime));
+      }
+    };
+
+    load();
+
     setNow(new Date());
 
     const interval = setInterval(() => {
@@ -19,10 +44,16 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, []);
 
-  const diff = now
-    ? eventDate.getTime() - now.getTime()
-    : 0;
+  // ⛔ prevent crash while loading
+  if (!eventDate || !now) {
+    return (
+      <main className="home-container">
+        <p style={{ textAlign: "center" }}>Loading...</p>
+      </main>
+    );
+  }
 
+  const diff = eventDate.getTime() - now.getTime();
   const isPast = diff <= 0;
 
   const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
@@ -30,95 +61,93 @@ export default function HomePage() {
   const minutes = Math.max(0, Math.floor((diff / (1000 * 60)) % 60));
   const seconds = Math.max(0, Math.floor((diff / 1000) % 60));
 
-return (
-  <main className="home-container">
-    <ul className="home-list">
+  return (
+    <main className="home-container">
+      <ul className="home-list">
 
-      {/* Hero */}
-      <li style={{ textTransform: "uppercase", textAlign: "center" }}>
-        <h2>Welcome to</h2>
-        <p
-          style={{
-            letterSpacing: "4px",
-            fontSize: "var(--text-hero)",
-            fontWeight: 800,
-          }}
-        >
-          Sports Master's Sports Day
+        {/* Hero */}
+        <li style={{ textTransform: "uppercase", textAlign: "center" }}>
+          <h2>Welcome to</h2>
+          <p
+            style={{
+              letterSpacing: "4px",
+              fontSize: "var(--text-hero)",
+              fontWeight: 800,
+            }}
+          >
+            Sports Master's Sports Day
+          </p>
+        </li>
+
+        <p style={{ textAlign: "center" }}>
+          Just an excuse to get out tbh. Casual park games, a bit of friendly competition,
+          and catching up with people I haven’t seen in ages.
         </p>
-      </li>
 
-      {/* Countdown */}
-      <li className="home-card highlight">
-  {isPast ? (
-    <p className="big-text">🏁 Event in progress / completed</p>
-  ) : (
-    <>
-      <h2>on</h2>
-      <p
-        style={{
-          letterSpacing: "4px",
-          fontSize: "var(--text-hero)",
-          fontWeight: 800,
-        }}
-      >
-        13th JUNE 2026
-      </p>
+        {/* Countdown */}
+        <li className="home-card highlight">
+          {isPast ? (
+            <p className="big-text">🏁 Event in progress / completed</p>
+          ) : (
+            <>
+              <h2>on</h2>
 
-      <h2>at</h2>
-      <p
-        style={{
-          letterSpacing: "4px",
-          fontSize: "var(--text-hero)",
-          fontWeight: 800,
-        }}
-      >
-        10:00 AM
-      </p>
+              <p
+                style={{
+                  letterSpacing: "4px",
+                  fontSize: "var(--text-hero)",
+                  fontWeight: 800,
+                }}
+              >
+                {eventDate.toLocaleDateString(undefined, {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                }).toUpperCase()}
+              </p>
 
-      <div className="countdown-grid">
-        <div>
-          <span>{days}</span>
-          <small>Days</small>
-        </div>
-        <div>
-          <span>{hours}</span>
-          <small>Hours</small>
-        </div>
-        <div>
-          <span>{minutes}</span>
-          <small>Min</small>
-        </div>
-        <div>
-          <span>{seconds}</span>
-          <small>Sec</small>
-        </div>
-      </div>
-    </>
-  )}
-</li>
+              <h2>at</h2>
+              <p
+                style={{
+                  letterSpacing: "4px",
+                  fontSize: "var(--text-hero)",
+                  fontWeight: 800,
+                }}
+              >
+                {eventDate.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </p>
 
-      {/* Location */}
-      <li className="home-card">
-        <h2>Location</h2>
-        <p className="big-text">Bute Park, Cardiff</p>
-        <p className="muted">
-          Exact venue details to be confirmed by closer to the event. Stay tuned!
-        </p>
-        <LocationNavButton />
-      </li>
+              <div className="countdown-grid">
+                <div><span>{days}</span><small>Days</small></div>
+                <div><span>{hours}</span><small>Hours</small></div>
+                <div><span>{minutes}</span><small>Min</small></div>
+                <div><span>{seconds}</span><small>Sec</small></div>
+              </div>
+            </>
+          )}
+        </li>
 
-      {/* Footer Info */}
-      <li>
-        <p
-          className="muted"
-          style={{ textAlign: "center" }}
-        >
-          Compete in events. Earn points. Represent your house. Win glory.
-        </p>
-      </li>
+        {/* Location */}
+        <li className="home-card">
+          <h2>Location</h2>
+          <p className="big-text">Bute Park, Cardiff</p>
+          <p className="muted">
+            Exact venue details to be confirmed by closer to the event. Stay tuned!
+          </p>
+          <LocationNavButton />
+        </li>
 
-    </ul>
-  </main>
-);
+        {/* Footer */}
+        <li>
+          <p className="muted" style={{ textAlign: "center" }}>
+            Compete in events. Earn points. Represent your house. Win glory.
+          </p>
+        </li>
+
+      </ul>
+    </main>
+  );
 }

@@ -95,7 +95,7 @@ export default function LoginPage() {
         <h1>Login</h1>
 
         <p className="login-subtitle">
-          Enter your name to join Sports Master's Sports Day.
+          Enter your name and your house will be assigned automatically
         </p>
 
         <div className="login-form">

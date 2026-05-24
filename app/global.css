@@ -948,6 +948,14 @@ p {
   background: var(--surface-lighter);
 }
 
+.details-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
 /* Mobile */
 
 @media (max-width: 768px) {
