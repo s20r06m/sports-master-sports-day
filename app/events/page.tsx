@@ -3,6 +3,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import EventCard from "@/components/EventCard";
 import SuggestEvent from "@/components/SuggestEvent";
 import SuggestedEventItem from "@/components/SuggestedEventItem";
+import CurrentUserBar from "@/components/CurrentUserBar";
 
 type Event = {
   eventid: string;
@@ -66,6 +67,7 @@ const suggestedEvents = events.filter((e) => e.suggested);
   return (
     <ProtectedRoute>
       <main>
+        <CurrentUserBar />
         <h1>Upcoming Events</h1>
         {upcomingEvents.length === 0 ? (
           <p>No upcoming events.</p>

@@ -159,7 +159,8 @@ p {
   width: 100%;
   max-width: var(--container-width);
   margin: 0 auto;
-  padding: var(--space-xl) var(--space-lg);
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
 
   display: flex;
   flex-wrap: wrap;

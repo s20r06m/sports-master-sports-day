@@ -32,7 +32,11 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="site-header-inner">
-        <div className="site-title">SM'S SPORTS DAY</div>
+        <div className="site-title">
+          <Link href="/">
+            SM'S SPORTS DAY
+          </Link>
+        </div>
 
         <nav className="site-nav">
           <Link href="/" className="nav-link">Home</Link>
@@ -40,9 +44,12 @@ export default function Header() {
           {isLoggedIn && (
             <Link href="/events" className="nav-link">Events</Link>
           )}
+          {isLoggedIn && (
+            <Link href="/draws" className="nav-link">Draws</Link>
+          )}
 
           {isLoggedIn && (
-            <Link href="/leaderboard" className="nav-link">Leaderboard</Link>
+            <Link href="/leaderboard" className="nav-link">Scores</Link>
           )}
 
           {!isLoggedIn && (
