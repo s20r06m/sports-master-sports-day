@@ -79,7 +79,7 @@ DTSTAMP:${format(new Date())}
 DTSTART:${format(start)}
 DTEND:${format(end)}
 SUMMARY:Sports Master's Sports Day
-LOCATION:Bute Park, Cardiff
+LOCATION:Pontcanna Fields, Cardiff
 DESCRIPTION:Casual park games, friendly competition, and social sports day.
 END:VEVENT
 END:VCALENDAR`;
@@ -170,7 +170,7 @@ END:VCALENDAR`;
         {/* Location */}
         <li className="home-card">
           <h2>Location</h2>
-          <p className="big-text">Bute Park, Cardiff</p>
+          <p className="big-text">Pontcanna Fields, Cardiff</p>
           <p className="muted">
             Exact venue details to be confirmed by closer to the event. Stay tuned!
           </p>
