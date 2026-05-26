@@ -91,22 +91,22 @@ export default function MatchupsAdmin() {
             <h4>Number of Teams</h4>
 
             <input
-  type="number"
-  min={2}
-  max={participants.length}
-  value={teamCount}
-  onChange={(e) => {
-    const value = Number(e.target.value);
+                type="number"
+                min={0}
+                max={participants.length}
+                value={teamCount}
+                onChange={(e) => {
+                    const value = Number(e.target.value);
 
-    const clamped = Math.max(
-      2,
-      Math.min(value, participants.length)
-    );
+                    const clamped = Math.max(
+                        2,
+                        Math.min(value, participants.length)
+                    );
 
-    setTeamCount(clamped);
-  }}
-  className="event-admin-name"
-/>
+                    setTeamCount(clamped);
+                }}
+                className="event-admin-name"
+            />
 
 
 
@@ -186,9 +186,9 @@ export default function MatchupsAdmin() {
                                             return (
                                                 <div
                                                     key={userid}
-className={`event-admin-player house-${(user?.house ?? "default")
-  .toLowerCase()
-  .replace(/[^a-z0-9]+/g, "-")}`}                                                >
+                                                    className={`event-admin-player house-${(user?.house ?? "default")
+                                                        .toLowerCase()
+                                                        .replace(/[^a-z0-9]+/g, "-")}`}                                                >
                                                     {user?.firstname} {user?.lastname}
                                                 </div>
                                             );
