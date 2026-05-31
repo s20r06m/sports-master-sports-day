@@ -45,6 +45,10 @@ export default function Header() {
             <Link href="/events" className="nav-link">Events</Link>
           )}
 
+                    {isLoggedIn && (
+            <Link href="/draws" className="nav-link">Draws</Link>
+          )}
+
           {isLoggedIn && (
             <Link href="/leaderboard" className="nav-link">Scores</Link>
           )}
