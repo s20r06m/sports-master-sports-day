@@ -115,7 +115,7 @@ END:VCALENDAR`;
 
         <p style={{ textAlign: "center" }}>
           Just an excuse to get out tbh. Casual park games, a bit of friendly competition,
-          and catching up with people I haven’t seen in ages.
+          and if it rains, there's always the spoons.
         </p>
 
         {/* Countdown */}
