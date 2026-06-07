@@ -8,12 +8,14 @@ const ROW_ID = "0aef1ed7-0c22-48bc-b41b-65fb77d08c75";
 type Details = {
   location: string | null;
   dateandtime: string | null;
+  titletext: string | null;
 };
 
 export default function DetailsAdmin() {
   const [form, setForm] = useState<Details>({
     location: "",
     dateandtime: null,
+    titletext: null,
   });
 
   useEffect(() => {
@@ -38,13 +40,14 @@ export default function DetailsAdmin() {
   };
 
   const save = async () => {
-    await supabase
-      .from("details")
-      .update({
-        dateandtime: form.dateandtime,
-      })
-      .eq("id", ROW_ID);
-  };
+  await supabase
+    .from("details")
+    .update({
+      dateandtime: form.dateandtime,
+      titletext: form.titletext,
+    })
+    .eq("id", ROW_ID);
+};
 
   const setLocation = () => {
     if (!navigator.geolocation) {
@@ -73,27 +76,38 @@ export default function DetailsAdmin() {
 
   return (
     <div className="event-admin">
-      
-<div className="details-row">
   <input
     className="event-admin-create"
-    type="datetime-local"
-    value={form.dateandtime ? form.dateandtime.slice(0, 16) : ""}
-    onChange={(e) => updateField("dateandtime", e.target.value)}
+    type="text"
+    placeholder="Title text"
+    value={form.titletext ?? ""}
+    onChange={(e) => updateField("titletext", e.target.value)}
   />
 
-  <button className="event-admin-create" onClick={save}>
-    Save Details
-  </button>
-</div>
-
-        <button className="event-admin-create" onClick={setLocation}>
-          Set Location
+      <div className="details-row">
+        
+        <input
+          className="event-admin-create"
+          type="datetime-local"
+          value={form.dateandtime ? form.dateandtime.slice(0, 16) : ""}
+          onChange={(e) => updateField("dateandtime", e.target.value)}
+        />
+<button className="event-admin-create" onClick={save}>
+          Save Deate & Title
         </button>
 
-        <button className="event-admin-create" onClick={clearLocation}>
-          Clear Location
-        </button>
+      </div>
+                    
+    <div className="details-row">
+      <button className="event-admin-create" onClick={setLocation}>
+        Set Location
+      </button>
+
+      <button className="event-admin-create" onClick={clearLocation}>
+        Clear Location
+      </button>
+      </div>
+
     </div>
   );
 }

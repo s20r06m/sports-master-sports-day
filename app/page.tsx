@@ -9,9 +9,11 @@ const ROW_ID = "0aef1ed7-0c22-48bc-b41b-65fb77d08c75";
 type Details = {
   location: string | null;
   dateandtime: string | null;
+  titletext: string | null;
 };
 
 export default function HomePage() {
+  const [details, setDetails] = useState<Details | null>(null);
   const [eventDate, setEventDate] = useState<Date | null>(null);
   const [now, setNow] = useState<Date | null>(null);
 
@@ -19,14 +21,16 @@ export default function HomePage() {
     const load = async () => {
       const { data, error } = await supabase
         .from("details")
-        .select("dateandtime")
+        .select("location, dateandtime, titletext")
         .eq("id", ROW_ID)
         .single();
 
       if (error) {
-        console.error("Failed to load event date:", error);
+        console.error("Failed to load details:", error);
         return;
       }
+
+      setDetails(data);
 
       if (data?.dateandtime) {
         setEventDate(new Date(data.dateandtime));
@@ -114,9 +118,9 @@ END:VCALENDAR`;
         </li>
 
         <p style={{ textAlign: "center" }}>
-          Just an excuse to get out tbh. Casual park games, a bit of friendly competition,
-          and if it rains, there's always the spoons.
-        </p>
+  {details?.titletext ??
+    "Just an excuse to get out tbh. Casual park games, a bit of friendly competition, and catching up with people I haven’t seen in ages."}
+</p>
 
         {/* Countdown */}
         <li className="home-card highlight">
