@@ -89,7 +89,7 @@ export default function MatchupsAdmin() {
     return (
         <div className="event-admin">
 
-                        <h4>Participants</h4>
+            <h4>Participants</h4>
 
             <div className="event-admin-grid">
                 {users.map((user) => {
@@ -120,22 +120,22 @@ export default function MatchupsAdmin() {
                 >
                     Select All
                 </button>
-                            <h4>Number of Teams</h4>
+                <h4>Number of Teams</h4>
                 <div className="team-stepper">
-  <button className="event-admin-create" onClick={() =>
-    setTeamCount(Math.max(2, teamCount - 1))
-  }>
-    -
-  </button>
+                    <button className="event-admin-create" onClick={() =>
+                        setTeamCount(Math.max(2, teamCount - 1))
+                    }>
+                        -
+                    </button>
 
-  <span className="event-admin-create">{teamCount}</span>
+                    <span className="event-admin-create">{teamCount}</span>
 
-  <button className="event-admin-create" onClick={() =>
-    setTeamCount(Math.min(participants.length, teamCount + 1))
-  }>
-    +
-  </button>
-</div>
+                    <button className="event-admin-create" onClick={() =>
+                        setTeamCount(Math.min(participants.length, teamCount + 1))
+                    }>
+                        +
+                    </button>
+                </div>
 
                 <button
                     className="event-admin-select-all"
@@ -143,7 +143,7 @@ export default function MatchupsAdmin() {
                 >
                     Clear
                 </button>
-                
+
 
             </div>
 

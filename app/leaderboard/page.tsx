@@ -76,6 +76,8 @@ export default async function LeaderboardPage() {
     <main>
       <CurrentUserBar />
       <h1>Leaderboard</h1>
+      
+      <p><b>POINTS SYSTEM:</b> Participated: +1 | Third Place: +2 | Second Place: +3 | First Place: +4 </p>
       <div className="team-grid">
         <div className="team-card house-red">
           <h3>Red Team</h3>
